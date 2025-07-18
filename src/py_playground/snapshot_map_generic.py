@@ -1,30 +1,43 @@
-from dataclasses import dataclass
+# ruff: noqa: T201
+
 import logging
+from dataclasses import dataclass
+from typing import TypeVar
+
+logger = logging.getLogger(__name__)
+
+# Define generic type variables for Key and Value
+KT = TypeVar("KT")
+VT = TypeVar("VT")
+
 
 @dataclass
-class HistoryEntry:
+class HistoryEntry[VT]:
     """A Plain Old Python Object to store a value at a specific snapshot moment."""
-    snap_id: int
-    value: int | None
 
-class SnapshottableMap:
+    snap_id: int
+    value: VT | None
+
+
+class SnapshottableMap[KT, VT]:
     """
-    A map-like class that supports taking snapshots of its state.
+    A generic map-like class that supports taking snapshots of its state.
 
     This implementation records the history of each key as it's modified.
     The `put` and `take_snapshot` operations are O(1). Getting from a snapshot
     is O(log S) via binary search.
-    
+
     Raises:
         KeyError: If a key is not found in the map or in a specified snapshot.
     """
-    def __init__(self):
+
+    def __init__(self) -> None:
         """
         Initializes the SnapshottableMap.
         """
         # Maps a key to its value history using the HistoryEntry class.
-        self._key_history_store: dict[str, list[HistoryEntry]] = {}
-        
+        self._key_history_store: dict[KT, list[HistoryEntry[VT]]] = {}
+
         # A counter to generate unique, sequential snapshot IDs, starting from 0.
         self._next_snap_id: int = 0
 
@@ -39,16 +52,16 @@ class SnapshottableMap:
         self._next_snap_id += 1
         return snap_id
 
-    def put(self, k: str, v: int | None):
+    def put(self, k: KT, v: VT | None) -> None:
         """
         Associates a value with a key, recording the change for the next snapshot.
 
         Args:
-            k: The key (str).
-            v: The value (int or None for deletion).
+            k: The key (generic type KT).
+            v: The value (generic type VT or None for deletion).
         """
-        history: list[HistoryEntry] = self._key_history_store.setdefault(k, [])
-        
+        history: list[HistoryEntry[VT]] = self._key_history_store.setdefault(k, [])
+
         # If a change was already logged for this key before the next snapshot,
         # just update the value. Otherwise, append a new entry.
         if history and history[-1].snap_id == self._next_snap_id:
@@ -56,17 +69,17 @@ class SnapshottableMap:
         else:
             history.append(HistoryEntry(snap_id=self._next_snap_id, value=v))
 
-    def delete(self, k: str):
+    def delete(self, k: KT) -> None:
         """
         Records the deletion of a key for the next snapshot.
 
         Args:
-            k: The key (str) to delete.
+            k: The key (generic type KT) to delete.
         """
         if k in self._key_history_store:
             self.put(k, None)
 
-    def get(self, k: str) -> int:
+    def get(self, k: KT) -> VT:
         """
         Returns the current value for a given key. This is an O(1) operation.
 
@@ -76,16 +89,18 @@ class SnapshottableMap:
         Returns:
             The current value associated with the key.
         """
-        history: list[HistoryEntry] | None = self._key_history_store.get(k)
+        history: list[HistoryEntry[VT]] | None = self._key_history_store.get(k)
         if not history:
-            raise KeyError(f"Key '{k}' not found in current map state.")
+            msg = f"Key '{k}' not found in current map state."
+            raise KeyError(msg)
 
-        latest_value: int | None = history[-1].value
+        latest_value: VT | None = history[-1].value
         if latest_value is None:
-            raise KeyError(f"Key '{k}' not found (it may have been deleted).")
+            msg = f"Key '{k}' not found (it may have been deleted)."
+            raise KeyError(msg)
         return latest_value
-            
-    def get_from_snapshot(self, k: str, snap_id: int) -> int | None:
+
+    def get_from_snapshot(self, k: KT, snap_id: int) -> VT | None:
         """
         Returns the value for a key from a specific historical snapshot.
 
@@ -97,19 +112,23 @@ class SnapshottableMap:
             The value associated with the key in the specified snapshot.
         """
         if not (0 <= snap_id < self._next_snap_id):
-            valid_range: str = "No snapshots taken yet." if self._next_snap_id == 0 else f"0 to {self._next_snap_id - 1}."
-            raise IndexError(f"Invalid snap_id: {snap_id}. {valid_range}")
+            valid_range: str = (
+                "No snapshots taken yet." if self._next_snap_id == 0 else f"0 to {self._next_snap_id - 1}."
+            )
+            msg = f"Invalid snap_id: {snap_id}. {valid_range}"
+            raise IndexError(msg)
 
-        history: list[HistoryEntry] | None = self._key_history_store.get(k)
+        history: list[HistoryEntry[VT]] | None = self._key_history_store.get(k)
         if not history:
-            raise KeyError(f"Key '{k}' never existed, so it's not in snapshot {snap_id}.")
-        
+            msg = f"Key '{k}' never existed, so it's not in snapshot {snap_id}."
+            raise KeyError(msg)
+
         # Perform a manual binary search on the history list to find the relevant
         # snapshot without creating an intermediate list. This is O(log S).
         left, right = 0, len(history) - 1
         # `idx` will store the index of the last version of the key at or before the snapshot.
-        idx = -1 
-        
+        idx = -1
+
         while left <= right:
             mid = (left + right) // 2
             # Compare with the snapshot ID of the HistoryEntry object.
@@ -120,18 +139,24 @@ class SnapshottableMap:
                 right = mid - 1
 
         if idx == -1:
-            logging.error(f"Key '{k}' did not exist in snapshot {snap_id}.")
-            # raise KeyError(f"Key '{k}' did not exist in snapshot {snap_id}.")
+            logger.error("Key '%s' did not exist in snapshot %s.", k, snap_id)
+
             return None
 
-        relevant_value: int | None = history[idx].value
+        relevant_value: VT | None = history[idx].value
         if relevant_value is None:
-            raise KeyError(f"Key '{k}' did not exist in snapshot {snap_id} (it was deleted).")
-            
+            logger.error(
+                "Key '%s' did not exist in snapshot %s (it was deleted).",
+                k,
+                snap_id,
+            )
+            return None
+
         return relevant_value
 
+
 if __name__ == "__main__":
-    s = SnapshottableMap()
+    s = SnapshottableMap[str, int]()
     s.put("1", 1)
     s.put("2", 2)
     s.put("3", 3)
@@ -144,32 +169,11 @@ if __name__ == "__main__":
     s.put("3", 4)
     print(s.take_snapshot())  # snapshot_id 2
 
-    print('---')
+    print("---")
     print(s.get_from_snapshot("1", 0))
     print(s.get_from_snapshot("1", 1))
     print(s.get_from_snapshot("1", 2))
-    print('---')
+    print("---")
     print(s.get_from_snapshot("4", 0))
     print(s.get_from_snapshot("4", 1))
     print(s.get_from_snapshot("4", 2))
-# Snapshots
-# 	•	After the first three puts, you call snapshot(). This records snapshot 0.
-# Output: 0
-# 	•	After put(1, 2), you call snapshot() again. This records snapshot 1.
-# Output: 1
-# 	•	After two more puts, you call snapshot() again. This records snapshot 2.
-# Output: 2
-#
-# Getting values
-# 	•	s.snapshot_get(1, 0)
-# → Value for key 1 at snapshot 0 is 1 (from first put).
-# 	•	s.snapshot_get(1, 1)
-# → Value for key 1 at snapshot 1 is 2 (updated after second put and new snapshot).
-# 	•	s.snapshot_get(1, 2)
-# → Value for key 1 at snapshot 2 is 2 (not updated since previous snapshot).
-# 	•	s.snapshot_get(4, 0)
-# → Key 4 did not exist at snapshot 0, so None.
-# 	•	s.snapshot_get(4, 1)
-# → Key 4 did not exist at snapshot 1, so None.
-# 	•	s.snapshot_get(4, 2)
-# → Key 4 was set to 4 before snapshot 2, so 4.
