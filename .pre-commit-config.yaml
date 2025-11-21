@@ -6,24 +6,25 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.12.4'
+    rev: 'v0.14.5'
     hooks:
       - id: ruff
         args: [--fix]
       - id: ruff-format
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.20.0
+    rev: v3.21.2
     hooks:
       - id: pyupgrade
-        args: [--py312-plus]
+        args: [--py314-plus]
   - repo: https://github.com/rbubley/mirrors-prettier
     rev: v3.6.2
     hooks:
       - id: prettier
         additional_dependencies:
           - prettier@3.6.2
-          - 'prettier-plugin-java@2.7.1'
-          - 'prettier-plugin-toml@2.0.5'
+          - 'prettier-plugin-java@2.7.7'
+          - 'prettier-plugin-toml@2.0.6'
           - '@prettier/plugin-xml@v3.4.2'
         files: .*\.(js|jsx|ts|tsx|css|json|md|mdx|markdown|toml|xml|yaml|yml)$
         stages: [pre-commit]
+exclude: pnpm-lock.yaml
