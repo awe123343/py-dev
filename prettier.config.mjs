@@ -7,13 +7,13 @@
 const config = {
   plugins: ['prettier-plugin-java', 'prettier-plugin-toml'],
   printWidth: 120,
-  trailingComma: 'es5',
+  trailingComma: 'all',
   tabWidth: 4,
   semi: false,
   singleQuote: true,
   overrides: [
     {
-      files: ['*.yaml', '*.json', '*.js', '*.jsx', '*.ts', '*.tsx', '*.cjs'],
+      files: ['*.yaml', '*.yml', '*.json', '*.js', '*.jsx', '*.ts', '*.tsx', '*.cjs', '*.mjs'],
       options: {
         tabWidth: 2,
       },
@@ -21,4 +21,4 @@ const config = {
   ],
 }
 
-module.exports = config
+export default config
