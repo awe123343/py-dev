@@ -2,8 +2,10 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
-      - id: check-yaml
       - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending
+        args: [--fix=lf]
       - id: trailing-whitespace
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: 'v0.14.5'
@@ -16,15 +18,19 @@ repos:
     hooks:
       - id: pyupgrade
         args: [--py314-plus]
-  - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.6.2
+  - repo: local
     hooks:
       - id: prettier
-        additional_dependencies:
-          - prettier@3.7.2
-          - 'prettier-plugin-java@2.7.7'
-          - 'prettier-plugin-toml@2.0.6'
-          - '@prettier/plugin-xml@v3.4.2'
-        files: .*\.(js|jsx|ts|tsx|css|json|md|mdx|markdown|toml|xml|yaml|yml)$
-        stages: [pre-commit]
+        name: prettier
+        entry: ./run-prettier.sh
+        language: system
+        require_serial: true
+        files: .*\.(js|jsx|ts|tsx|java|css|json|md|mdx|markdown|toml|xml|yaml|yml)$
+      - id: ktfmt-lint
+        name: Format and lint Kotlin files
+        entry: ./ktfmt-lint.sh
+        verbose: true
+        language: script
+        files: \.(kt|kts)$
+        require_serial: true
 exclude: pnpm-lock.yaml
