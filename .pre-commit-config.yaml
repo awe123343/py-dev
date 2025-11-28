@@ -21,7 +21,7 @@ repos:
     hooks:
       - id: prettier
         additional_dependencies:
-          - prettier@3.7.1
+          - prettier@3.7.2
           - 'prettier-plugin-java@2.7.7'
           - 'prettier-plugin-toml@2.0.6'
           - '@prettier/plugin-xml@v3.4.2'
