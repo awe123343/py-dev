@@ -15,8 +15,8 @@ importers:
         specifier: 3.8.3
         version: 3.8.3
       prettier-plugin-java:
-        specifier: 2.9.5
-        version: 2.9.5(prettier@3.8.3)
+        specifier: 2.9.6
+        version: 2.9.6(prettier@3.8.3)
       prettier-plugin-toml:
         specifier: 2.0.6
         version: 2.0.6(prettier@3.8.3)
@@ -40,8 +40,8 @@ packages:
   chevrotain@7.1.1:
     resolution: {integrity: sha512-wy3mC1x4ye+O+QkEinVJkPf5u2vsrDIYW9G7ZuwFl6v/Yu0LwUuT2POsb+NUWApebyxfkQq6+yDfRExbnI5rcw==}
 
-  prettier-plugin-java@2.9.5:
-    resolution: {integrity: sha512-K7fg7rNgetxb11FkxJ741M2jelUd9jVovWWeE4+Gl1iCiExhSwJzhD+hFCPDWAHdjcpv7E6xFcGC8zu7Xu44oQ==}
+  prettier-plugin-java@2.9.6:
+    resolution: {integrity: sha512-nGw+O5Sjm8MEMLprH1dTONp7Rge26DVqChzpT4k2RVaVhs08dga2O1oiIUc0eFsk6TuA9aMOi+MmmXIb+spgBQ==}
     peerDependencies:
       prettier: ^3.0.0
 
@@ -83,7 +83,7 @@ snapshots:
     dependencies:
       regexp-to-ast: 0.5.0
 
-  prettier-plugin-java@2.9.5(prettier@3.8.3):
+  prettier-plugin-java@2.9.6(prettier@3.8.3):
     dependencies:
       prettier: 3.8.3
       web-tree-sitter: 0.26.9
