@@ -10,16 +10,16 @@ importers:
     dependencies:
       '@prettier/plugin-xml':
         specifier: 3.4.2
-        version: 3.4.2(prettier@3.8.3)
+        version: 3.4.2(prettier@3.8.4)
       prettier:
-        specifier: 3.8.3
-        version: 3.8.3
+        specifier: 3.8.4
+        version: 3.8.4
       prettier-plugin-java:
         specifier: 2.9.7
-        version: 2.9.7(prettier@3.8.3)
+        version: 2.9.7(prettier@3.8.4)
       prettier-plugin-toml:
         specifier: 2.0.6
-        version: 2.0.6(prettier@3.8.3)
+        version: 2.0.6(prettier@3.8.4)
 
 packages:
 
@@ -51,8 +51,8 @@ packages:
     peerDependencies:
       prettier: ^3.0.3
 
-  prettier@3.8.3:
-    resolution: {integrity: sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw==}
+  prettier@3.8.4:
+    resolution: {integrity: sha512-N2MylSdi48+5N/6S5j+maeHbUSIzzZ5uOcX5Hm4QpV8Dkb1HFjfAKTKX6yNPJQD9AhcT3ifHNB66tWTTJDi11Q==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -64,10 +64,10 @@ packages:
 
 snapshots:
 
-  '@prettier/plugin-xml@3.4.2(prettier@3.8.3)':
+  '@prettier/plugin-xml@3.4.2(prettier@3.8.4)':
     dependencies:
       '@xml-tools/parser': 1.0.11
-      prettier: 3.8.3
+      prettier: 3.8.4
 
   '@taplo/core@0.2.0': {}
 
@@ -83,17 +83,17 @@ snapshots:
     dependencies:
       regexp-to-ast: 0.5.0
 
-  prettier-plugin-java@2.9.7(prettier@3.8.3):
+  prettier-plugin-java@2.9.7(prettier@3.8.4):
     dependencies:
-      prettier: 3.8.3
+      prettier: 3.8.4
       web-tree-sitter: 0.26.9
 
-  prettier-plugin-toml@2.0.6(prettier@3.8.3):
+  prettier-plugin-toml@2.0.6(prettier@3.8.4):
     dependencies:
       '@taplo/lib': 0.5.0
-      prettier: 3.8.3
+      prettier: 3.8.4
 
-  prettier@3.8.3: {}
+  prettier@3.8.4: {}
 
   regexp-to-ast@0.5.0: {}
 
