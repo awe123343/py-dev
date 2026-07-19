@@ -15,8 +15,8 @@ importers:
         specifier: 3.9.5
         version: 3.9.5
       prettier-plugin-java:
-        specifier: 2.10.2
-        version: 2.10.2(prettier@3.9.5)
+        specifier: 2.10.3
+        version: 2.10.3(prettier@3.9.5)
       prettier-plugin-toml:
         specifier: 2.0.6
         version: 2.0.6(prettier@3.9.5)
@@ -40,8 +40,8 @@ packages:
   chevrotain@7.1.1:
     resolution: {integrity: sha512-wy3mC1x4ye+O+QkEinVJkPf5u2vsrDIYW9G7ZuwFl6v/Yu0LwUuT2POsb+NUWApebyxfkQq6+yDfRExbnI5rcw==}
 
-  prettier-plugin-java@2.10.2:
-    resolution: {integrity: sha512-oOXUBqb0BKfL//ZeYFcsRtbm4h8jdicg1axbBrXh2tnUcAcKAyFCl3gUL7bN7kwDwFRraQop1RF9BZk+K6pmoQ==}
+  prettier-plugin-java@2.10.3:
+    resolution: {integrity: sha512-/g52mTbsN2ee8JjLRpBWGGmcmRhdv2zRWyj4QbsL9CQ+nKR022GRJhebwEpRyaCc8hLV6aO3JPGNQyXp1DPrCA==}
     peerDependencies:
       prettier: ^3.0.0
 
@@ -59,8 +59,8 @@ packages:
   regexp-to-ast@0.5.0:
     resolution: {integrity: sha512-tlbJqcMHnPKI9zSrystikWKwHkBqu2a/Sgw01h3zFjvYrMxEDYHzzoMZnUrbIfpTFEsoRnnviOXNCzFiSc54Qw==}
 
-  web-tree-sitter@0.26.9:
-    resolution: {integrity: sha512-YJwSHANl6XFgeEjB8nitgj0qZYt5gkIesJ4w2srS2wcLB4GUa4xcOkM0YaMsU6WNR53YVIkDSY7Ej4pf3IXtCA==}
+  web-tree-sitter@0.26.11:
+    resolution: {integrity: sha512-Q5Dm3YTIXSXuH6FxX6RuzX2Qwpc4DPGiYMU87Wg5Z8OIStiQFiUex4zMDc0vBTw78EphaYJacncJghCHzbZptg==}
 
 snapshots:
 
@@ -83,10 +83,10 @@ snapshots:
     dependencies:
       regexp-to-ast: 0.5.0
 
-  prettier-plugin-java@2.10.2(prettier@3.9.5):
+  prettier-plugin-java@2.10.3(prettier@3.9.5):
     dependencies:
       prettier: 3.9.5
-      web-tree-sitter: 0.26.9
+      web-tree-sitter: 0.26.11
 
   prettier-plugin-toml@2.0.6(prettier@3.9.5):
     dependencies:
@@ -97,4 +97,4 @@ snapshots:
 
   regexp-to-ast@0.5.0: {}
 
-  web-tree-sitter@0.26.9: {}
+  web-tree-sitter@0.26.11: {}
